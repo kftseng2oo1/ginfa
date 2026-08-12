@@ -2,7 +2,7 @@
 
 依《太乙金華宗旨》（呂祖著，清刊本）編成的百日築基實修 PWA。單檔 HTML，離線可用，所有紀錄只存在本機瀏覽器。
 
-**線上使用**：https://kftseng2oo1.github.io/golden-flower-practice/
+**線上使用**：https://kftseng2oo1.github.io/ginfa/
 
 ## 功能
 

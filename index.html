@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover">
 <meta name="theme-color" content="#0B1020">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -34,9 +34,10 @@ body{
   background:var(--ink);
   color:var(--paper);
   font-family:var(--sans);
-  font-size:15px;line-height:1.7;
+  font-size:calc(15px * var(--fs,1));line-height:1.7;
   -webkit-font-smoothing:antialiased;
   overflow:hidden;
+  touch-action:pan-x pan-y pinch-zoom;
 }
 body::before{
   content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
@@ -89,8 +90,8 @@ nav.tabs button[aria-selected="true"] .dotmark{background:var(--gold)}
   font-size:10px;letter-spacing:.3em;color:var(--gold);
   text-transform:uppercase;margin-bottom:8px;
 }
-.quote{font-family:var(--serif);font-size:16px;line-height:2;color:var(--gold-soft)}
-.gloss{font-size:13.5px;color:var(--paper-dim);line-height:1.9;margin-top:10px}
+.quote{font-family:var(--serif);font-size:calc(16px * var(--fs,1));line-height:2;color:var(--gold-soft)}
+.gloss{font-size:calc(13.5px * var(--fs,1));color:var(--paper-dim);line-height:1.9;margin-top:10px}
 .btn{
   display:block;width:100%;text-align:center;
   padding:14px;border-radius:12px;
@@ -182,8 +183,8 @@ h2.sec:first-child{margin-top:8px}
 .face.back{transform:rotateY(180deg);background:linear-gradient(160deg,#182142,rgba(24,33,66,.6))}
 .face .kicker{font-size:10px;letter-spacing:.28em;color:var(--gold);margin-bottom:12px}
 .face .title{font-family:var(--serif);font-size:23px;letter-spacing:.1em;color:var(--gold-soft);margin-bottom:14px}
-.face .body{font-family:var(--serif);font-size:15.5px;line-height:2.05;color:var(--paper)}
-.face .plain{font-size:13.5px;line-height:1.95;color:var(--paper-dim);margin-top:14px;font-family:var(--sans)}
+.face .body{font-family:var(--serif);font-size:calc(15.5px * var(--fs,1));line-height:2.05;color:var(--paper)}
+.face .plain{font-size:calc(13.5px * var(--fs,1));line-height:1.95;color:var(--paper-dim);margin-top:14px;font-family:var(--sans)}
 .face .hintline{margin-top:auto;padding-top:16px;font-size:11px;letter-spacing:.18em;color:var(--paper-dim)}
 .box-pill{display:inline-block;font-size:10px;letter-spacing:.14em;color:var(--gold);border:1px solid var(--line);border-radius:20px;padding:2px 9px;margin-left:8px}
 
@@ -239,7 +240,7 @@ textarea{min-height:104px;resize:vertical}
   color:var(--gold-soft);text-shadow:0 0 24px rgba(228,179,73,.4);
 }
 .phase-name{font-family:var(--serif);font-size:19px;letter-spacing:.24em;color:var(--gold);margin-bottom:12px}
-.phase-cue{font-family:var(--serif);font-size:15px;line-height:2.1;color:var(--paper);max-width:19em;margin:0 auto}
+.phase-cue{font-family:var(--serif);font-size:calc(15px * var(--fs,1));line-height:2.1;color:var(--paper);max-width:19em;margin:0 auto}
 .phase-bar{display:flex;gap:4px;margin-top:26px;width:100%;max-width:300px}
 .phase-bar i{flex:1;height:2px;background:rgba(232,226,212,.14);border-radius:2px}
 .phase-bar i.on{background:var(--gold)}
@@ -470,11 +471,22 @@ body.theme-midnight .btn{background:none;color:var(--gold-soft);font-weight:400}
           <button data-v="1">開</button>
           <button data-v="0">關</button>
         </div>
-        <p class="muted" style="margin:12px 0 0">起香三通、換段一聲、收功三通。閉目坐時不必看螢幕。</p>
+        <p class="muted" style="margin:12px 0 0">起香三通、換段一聲、收功三通。閉目坐時不必看螢幕。<br>iPhone 側邊靜音鍵撥到響鈴那側才聽得到。</p>
         <button class="btn quiet" id="btnTestBell" style="margin-top:12px">試聽一聲</button>
       </div>
 
       <h2 class="sec">畫面</h2>
+      <div class="card">
+        <label class="fld">字級</label>
+        <div class="seg" id="segFs">
+          <button data-v="0.9">小</button>
+          <button data-v="1">標準</button>
+          <button data-v="1.15">大</button>
+          <button data-v="1.3">特大</button>
+        </div>
+        <p class="muted" style="margin:12px 0 0">也可以用兩指縮放畫面。</p>
+      </div>
+
       <div class="card">
         <label class="fld">配色</label>
         <div class="seg" id="segTheme">
@@ -556,6 +568,7 @@ function readStore(){
   if(!mem.prefs) mem.prefs = { dur:40 };
   if(typeof mem.prefs.bell === "undefined") mem.prefs.bell = 1;
   if(!mem.prefs.theme) mem.prefs.theme = "night";
+  if(!mem.prefs.fs) mem.prefs.fs = 1;
   return mem;
 }
 function saveStore(){
@@ -673,18 +686,47 @@ function tagName(k){
 }
 
 /* ---------------- 引磬（Web Audio） ---------------- */
+/* iOS 要點：
+   1. AudioContext 必須在使用者手勢中建立並 resume()，且要等 resume 完成再排程。
+   2. iOS 16.4+ 可設 navigator.audioSession.type = "playback"，
+      不設的話側邊靜音鍵一撥就完全聽不到聲音。
+   3. 先送一個無聲 buffer 把 context 真正叫醒。 */
 var Bell = (function(){
-  var ctx = null;
+  var ctx = null, master = null, primed = false;
+
   function ac(){
     if(ctx) return ctx;
     var C = window.AudioContext || window.webkitAudioContext;
     if(!C) return null;
-    try{ ctx = new C(); }catch(e){ ctx = null; }
+    try{
+      ctx = new C();
+      master = ctx.createGain();
+      master.gain.value = 1;
+      master.connect(ctx.destination);
+    }catch(e){ ctx = null; }
     return ctx;
   }
+
+  function session(){
+    try{
+      if(navigator.audioSession) navigator.audioSession.type = "playback";
+    }catch(e){}
+  }
+
+  function prime(c){
+    if(primed) return;
+    try{
+      var b = c.createBuffer(1, 1, 22050);
+      var s = c.createBufferSource();
+      s.buffer = b;
+      s.connect(c.destination);
+      if(s.start) s.start(0); else if(s.noteOn) s.noteOn(0);
+      primed = true;
+    }catch(e){}
+  }
+
   /* 單擊：基音 + 兩個非整數倍泛音，指數衰減，近似引磬的金屬餘韻 */
-  function strike(at, base, gainPeak, dur){
-    var c = ac(); if(!c) return;
+  function strike(c, at, base, gainPeak, dur){
     var parts = [[1, 1], [2.76, .42], [5.4, .18]];
     for(var i=0;i<parts.length;i++){
       var osc = c.createOscillator();
@@ -695,37 +737,58 @@ var Bell = (function(){
       g.gain.setValueAtTime(0.0001, at);
       g.gain.exponentialRampToValueAtTime(pk, at + 0.012);
       g.gain.exponentialRampToValueAtTime(0.0001, at + dur * (i === 0 ? 1 : 0.55));
-      osc.connect(g); g.connect(c.destination);
+      osc.connect(g); g.connect(master || c.destination);
       osc.start(at);
       osc.stop(at + dur + 0.1);
     }
   }
+
+  /* 等 context 真的 running 之後才排程，避免在 suspended 狀態下排到過去的時間點 */
+  function whenReady(cb, onFail){
+    var c = ac();
+    if(!c){ if(onFail) onFail("nocontext"); return; }
+    session();
+    prime(c);
+    if(c.state === "running"){ cb(c); return; }
+    var done = false;
+    var go = function(){
+      if(done) return;
+      done = true;
+      if(c.state === "running") cb(c);
+      else if(onFail) onFail("suspended");
+    };
+    try{
+      var p = c.resume();
+      if(p && p.then) p.then(go, go); else setTimeout(go, 60);
+    }catch(e){ setTimeout(go, 60); }
+    setTimeout(go, 400);   /* 保險：某些 WebView 的 resume 不回傳 promise */
+  }
+
   return {
-    unlock: function(){
-      var c = ac(); if(!c) return;
-      if(c.state === "suspended"){ try{ c.resume(); }catch(e){} }
-    },
+    unlock: function(){ whenReady(function(){}, function(){}); },
+
     /* n 通，gap 為間隔秒數 */
     ring: function(n, base, gap){
       if(!S.prefs.bell) return;
-      var c = ac(); if(!c) return;
-      this.unlock();
-      var t = c.currentTime + 0.05;
-      for(var i=0;i<n;i++){
-        strike(t + i * (gap || 2.1), base || 660, 0.42, 3.4);
-      }
+      whenReady(function(c){
+        var t = c.currentTime + 0.06;
+        for(var i=0;i<n;i++) strike(c, t + i * (gap || 2.1), base || 660, 0.42, 3.4);
+      });
     },
+
     soft: function(){
       if(!S.prefs.bell) return;
-      var c = ac(); if(!c) return;
-      this.unlock();
-      strike(c.currentTime + 0.05, 880, 0.20, 2.0);
+      whenReady(function(c){ strike(c, c.currentTime + 0.06, 880, 0.20, 2.0); });
     },
+
+    /* 試聽：不受開關影響，並在失敗時說明原因 */
     demo: function(){
-      var c = ac();
-      if(!c){ toast("這台裝置不支援 Web Audio"); return; }
-      this.unlock();
-      strike(c.currentTime + 0.05, 660, 0.42, 3.4);
+      whenReady(function(c){
+        strike(c, c.currentTime + 0.06, 660, 0.42, 3.4);
+        toast("已響一聲　若無聲請檢查靜音鍵與音量");
+      }, function(why){
+        toast(why === "nocontext" ? "這台裝置不支援 Web Audio" : "音訊未啟用，請再點一次");
+      });
     }
   };
 })();
@@ -1478,6 +1541,13 @@ function renderBellSeg(){
     bs[i].setAttribute("aria-pressed", (+bs[i].getAttribute("data-v") === (S.prefs.bell ? 1 : 0)) ? "true" : "false");
   }
 }
+function applyFs(){
+  document.documentElement.style.setProperty("--fs", String(S.prefs.fs || 1));
+  var bs = $("segFs").getElementsByTagName("button"), i;
+  for(i=0;i<bs.length;i++){
+    bs[i].setAttribute("aria-pressed", (bs[i].getAttribute("data-v") === String(S.prefs.fs || 1)) ? "true" : "false");
+  }
+}
 function applyTheme(){
   document.body.className = (S.prefs.theme === "midnight") ? "theme-midnight" : "";
   var meta = document.querySelector('meta[name="theme-color"]');
@@ -1597,6 +1667,16 @@ function bind(){
   }
   $("btnTestBell").addEventListener("click", function(){ Bell.demo(); });
 
+  var fbs = $("segFs").getElementsByTagName("button");
+  for(i=0;i<fbs.length;i++){
+    (function(b){
+      b.addEventListener("click", function(){
+        S.prefs.fs = parseFloat(b.getAttribute("data-v"));
+        saveStore(); applyFs();
+      });
+    })(fbs[i]);
+  }
+
   var tbs = $("segTheme").getElementsByTagName("button");
   for(i=0;i<tbs.length;i++){
     (function(b){
@@ -1616,6 +1696,7 @@ function bind(){
 /* ---------------- 啟動 ---------------- */
 function renderAll(){
   applyTheme();
+  applyFs();
   renderToday();
   renderCardStats();
   renderCardIndex();
