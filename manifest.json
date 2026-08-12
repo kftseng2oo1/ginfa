@@ -1,0 +1,35 @@
+{
+  "name": "回光百日 · 太乙金華宗旨",
+  "short_name": "回光百日",
+  "description": "太乙金華宗旨百日築基：靜坐引導、心法複習、修煉歷程紀錄。全部資料存在本機。",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "id": "/golden-flower-practice/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#0B1020",
+  "theme_color": "#0B1020",
+  "categories": ["health", "lifestyle", "education"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "起香靜坐",
+      "short_name": "起香",
+      "url": "./index.html?go=sit",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "要訣複習",
+      "short_name": "心法",
+      "url": "./index.html?go=cards",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

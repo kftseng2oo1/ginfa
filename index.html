@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0B1020">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="回光百日">
+<meta name="description" content="太乙金華宗旨 · 回光百日築基：靜坐引導、心法複習、修煉歷程紀錄">
+<title>回光百日 · 太乙金華宗旨</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230B1020'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='%23E4B349' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23F3DEA6'/%3E%3C/svg%3E">
+<style>
+:root{
+  --ink:#0B1020;
+  --ink-2:#141B31;
+  --ink-3:#1D2743;
+  --gold:#E4B349;
+  --gold-soft:#F3DEA6;
+  --cinnabar:#C4462F;
+  --paper:#E8E2D4;
+  --paper-dim:#9AA0B4;
+  --line:rgba(228,179,73,.18);
+  --serif:"Noto Serif TC","Source Han Serif TC","Songti TC","Songti SC",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang TC","Helvetica Neue","Microsoft JhengHei",sans-serif;
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-t:env(safe-area-inset-top,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%}
+body{
+  background:var(--ink);
+  color:var(--paper);
+  font-family:var(--sans);
+  font-size:15px;line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(circle at 50% 18%,rgba(228,179,73,.13),transparent 55%),
+    radial-gradient(circle at 12% 88%,rgba(196,70,47,.07),transparent 50%);
+}
+button{font-family:inherit;font-size:inherit;color:inherit;background:none;border:none;padding:0;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:16px;color:inherit}
+
+/* ---------- shell ---------- */
+#app{position:relative;z-index:1;height:100%;display:flex;flex-direction:column}
+header.topbar{
+  padding:calc(var(--safe-t) + 16px) 20px 10px;
+  display:flex;align-items:baseline;gap:10px;flex:0 0 auto;
+}
+.brand{font-family:var(--serif);font-size:19px;letter-spacing:.14em;color:var(--gold-soft)}
+.brand-sub{font-size:11px;letter-spacing:.22em;color:var(--paper-dim)}
+main{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 20px 28px}
+.view{display:none}
+.view.on{display:block}
+
+/* ---------- bottom nav ---------- */
+nav.tabs{
+  flex:0 0 auto;display:flex;
+  border-top:1px solid var(--line);
+  background:rgba(11,16,32,.92);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  padding-bottom:var(--safe-b);
+}
+nav.tabs button{
+  flex:1;padding:11px 0 9px;text-align:center;
+  font-family:var(--serif);font-size:14px;letter-spacing:.16em;
+  color:var(--paper-dim);position:relative;
+}
+nav.tabs button .dotmark{
+  display:block;width:4px;height:4px;border-radius:50%;
+  background:transparent;margin:5px auto 0;
+}
+nav.tabs button[aria-selected="true"]{color:var(--gold)}
+nav.tabs button[aria-selected="true"] .dotmark{background:var(--gold)}
+
+/* ---------- common bits ---------- */
+.card{
+  background:linear-gradient(160deg,var(--ink-2),rgba(20,27,49,.55));
+  border:1px solid var(--line);border-radius:14px;
+  padding:16px 18px;margin-bottom:14px;
+}
+.eyebrow{
+  font-size:10px;letter-spacing:.3em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:8px;
+}
+.quote{font-family:var(--serif);font-size:16px;line-height:2;color:var(--gold-soft)}
+.gloss{font-size:13.5px;color:var(--paper-dim);line-height:1.9;margin-top:10px}
+.btn{
+  display:block;width:100%;text-align:center;
+  padding:14px;border-radius:12px;
+  font-family:var(--serif);font-size:16px;letter-spacing:.2em;
+  border:1px solid var(--gold);color:var(--ink);
+  background:linear-gradient(150deg,var(--gold-soft),var(--gold));
+  font-weight:600;
+}
+.btn.ghost{background:none;color:var(--gold);font-weight:400}
+.btn.quiet{border-color:var(--line);color:var(--paper-dim)}
+.btn.danger{border-color:rgba(196,70,47,.6);color:var(--cinnabar)}
+.btn+.btn{margin-top:10px}
+.row{display:flex;gap:10px}
+.row>*{flex:1}
+h2.sec{
+  font-family:var(--serif);font-size:15px;letter-spacing:.2em;
+  color:var(--gold-soft);margin:22px 0 12px;font-weight:400;
+  padding-bottom:8px;border-bottom:1px solid var(--line);
+}
+h2.sec:first-child{margin-top:8px}
+.muted{color:var(--paper-dim);font-size:13px}
+.empty{
+  text-align:center;padding:34px 16px;color:var(--paper-dim);
+  font-size:13.5px;line-height:2;
+}
+
+/* ---------- signature: the light-return ring ---------- */
+.ring-wrap{position:relative;width:238px;height:238px;margin:14px auto 6px}
+.ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:rgba(232,226,212,.09);stroke-width:6}
+.ring-fg{fill:none;stroke:url(#goldgrad);stroke-width:6;stroke-linecap:round;transition:stroke-dasharray .9s ease}
+.ring-tick{stroke:rgba(232,226,212,.22);stroke-width:1.5}
+.ring-tick.past{stroke:rgba(228,179,73,.55)}
+.ring-core{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+}
+.ring-core .day{
+  font-family:var(--serif);font-size:52px;line-height:1;color:var(--gold-soft);
+  text-shadow:0 0 26px rgba(228,179,73,.45);
+}
+.ring-core .of{font-size:11px;letter-spacing:.3em;color:var(--paper-dim);margin-top:9px}
+.ring-core .stage{
+  font-family:var(--serif);font-size:14px;letter-spacing:.22em;
+  color:var(--gold);margin-top:12px;
+}
+.glowdot{
+  position:absolute;left:50%;top:50%;width:96px;height:96px;margin:-48px 0 0 -48px;
+  border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(228,179,73,.30),transparent 68%);
+}
+
+/* ---------- stat strip ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.stats div{background:var(--ink-2);padding:12px 6px;text-align:center}
+.stats b{display:block;font-family:var(--serif);font-size:21px;color:var(--gold-soft);font-weight:400}
+.stats span{font-size:10.5px;letter-spacing:.14em;color:var(--paper-dim)}
+
+/* ---------- day grid ---------- */
+.grid100{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-top:4px}
+.cellwrap{margin-bottom:16px}
+.cellwrap .xun-label{font-family:var(--serif);font-size:12px;letter-spacing:.18em;color:var(--paper-dim);margin-bottom:6px}
+.cell{
+  aspect-ratio:1/1;border-radius:5px;border:1px solid rgba(232,226,212,.13);
+  font-size:10px;color:var(--paper-dim);
+  display:flex;align-items:center;justify-content:center;
+}
+.cell.done{background:linear-gradient(150deg,rgba(243,222,166,.85),rgba(228,179,73,.7));border-color:var(--gold);color:var(--ink);font-weight:600}
+.cell.today{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset;color:var(--gold)}
+.cell.proof{position:relative}
+.cell.proof::after{content:"";position:absolute;top:2px;right:2px;width:4px;height:4px;border-radius:50%;background:var(--cinnabar)}
+
+/* ---------- flashcards ---------- */
+.flip{
+  position:relative;min-height:250px;perspective:1200px;margin-bottom:14px;
+}
+.flip-in{
+  position:relative;width:100%;min-height:250px;
+  transition:transform .55s cubic-bezier(.4,.1,.2,1);transform-style:preserve-3d;
+}
+.flip.open .flip-in{transform:rotateY(180deg)}
+.face{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border:1px solid var(--line);border-radius:16px;padding:22px 20px;
+  display:flex;flex-direction:column;justify-content:center;
+  background:linear-gradient(160deg,var(--ink-2),rgba(20,27,49,.5));
+  overflow-y:auto;
+}
+.face.back{transform:rotateY(180deg);background:linear-gradient(160deg,#182142,rgba(24,33,66,.6))}
+.face .kicker{font-size:10px;letter-spacing:.28em;color:var(--gold);margin-bottom:12px}
+.face .title{font-family:var(--serif);font-size:23px;letter-spacing:.1em;color:var(--gold-soft);margin-bottom:14px}
+.face .body{font-family:var(--serif);font-size:15.5px;line-height:2.05;color:var(--paper)}
+.face .plain{font-size:13.5px;line-height:1.95;color:var(--paper-dim);margin-top:14px;font-family:var(--sans)}
+.face .hintline{margin-top:auto;padding-top:16px;font-size:11px;letter-spacing:.18em;color:var(--paper-dim)}
+.box-pill{display:inline-block;font-size:10px;letter-spacing:.14em;color:var(--gold);border:1px solid var(--line);border-radius:20px;padding:2px 9px;margin-left:8px}
+
+.card-list-item{
+  border-bottom:1px solid var(--line);padding:13px 2px;
+}
+.card-list-item .t{font-family:var(--serif);font-size:15.5px;color:var(--gold-soft);letter-spacing:.06em}
+.card-list-item .q{font-size:13px;color:var(--paper-dim);margin-top:5px;line-height:1.85}
+
+/* ---------- form controls ---------- */
+label.fld{display:block;margin:16px 0 7px;font-size:11px;letter-spacing:.22em;color:var(--gold)}
+.seg{display:flex;gap:6px}
+.seg button{
+  flex:1;padding:10px 4px;border:1px solid var(--line);border-radius:9px;
+  font-size:13px;color:var(--paper-dim);text-align:center;
+}
+.seg button[aria-pressed="true"]{border-color:var(--gold);color:var(--gold);background:rgba(228,179,73,.1)}
+.chips{display:flex;flex-direction:column;gap:8px}
+.chips button{
+  text-align:left;padding:12px 14px;border:1px solid var(--line);border-radius:10px;
+  font-size:13.5px;color:var(--paper-dim);line-height:1.6;
+}
+.chips button[aria-pressed="true"]{border-color:var(--gold);color:var(--gold-soft);background:rgba(228,179,73,.1)}
+.chips button b{font-family:var(--serif);font-size:15px;font-weight:400;display:block;margin-bottom:2px;letter-spacing:.1em}
+textarea,input[type=text],input[type=number],input[type=time],select{
+  width:100%;background:var(--ink);border:1px solid var(--line);border-radius:10px;
+  padding:12px 13px;line-height:1.7;
+}
+textarea{min-height:104px;resize:vertical}
+
+/* ---------- sit overlay ---------- */
+#sit{
+  position:fixed;inset:0;z-index:60;background:var(--ink);
+  display:none;flex-direction:column;
+  padding:calc(var(--safe-t) + 18px) 22px calc(var(--safe-b) + 18px);
+}
+#sit.on{display:flex}
+#sit .sit-top{display:flex;justify-content:space-between;align-items:center;font-size:12px;letter-spacing:.2em;color:var(--paper-dim)}
+#sit .sit-mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.breath{
+  position:relative;width:190px;height:190px;border-radius:50%;
+  border:1px solid rgba(228,179,73,.3);
+  display:flex;align-items:center;justify-content:center;margin-bottom:26px;
+}
+.breath::before{
+  content:"";position:absolute;width:150px;height:150px;border-radius:50%;
+  background:radial-gradient(circle,rgba(228,179,73,.32),transparent 70%);
+  animation:breathe 12s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{transform:scale(.62);opacity:.42}50%{transform:scale(1.06);opacity:.92}}
+.clock{
+  position:relative;font-family:var(--serif);font-size:44px;letter-spacing:.06em;
+  color:var(--gold-soft);text-shadow:0 0 24px rgba(228,179,73,.4);
+}
+.phase-name{font-family:var(--serif);font-size:19px;letter-spacing:.24em;color:var(--gold);margin-bottom:12px}
+.phase-cue{font-family:var(--serif);font-size:15px;line-height:2.1;color:var(--paper);max-width:19em;margin:0 auto}
+.phase-bar{display:flex;gap:4px;margin-top:26px;width:100%;max-width:300px}
+.phase-bar i{flex:1;height:2px;background:rgba(232,226,212,.14);border-radius:2px}
+.phase-bar i.on{background:var(--gold)}
+
+/* ---------- modal ---------- */
+.modal{
+  position:fixed;inset:0;z-index:70;display:none;
+  background:rgba(6,9,20,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+}
+.modal.on{display:block}
+.sheet{
+  position:absolute;left:0;right:0;bottom:0;max-height:92%;overflow-y:auto;
+  background:var(--ink-2);border-top:1px solid var(--line);
+  border-radius:20px 20px 0 0;
+  padding:22px 22px calc(var(--safe-b) + 22px);
+}
+.sheet h3{
+  font-family:var(--serif);font-weight:400;font-size:18px;letter-spacing:.18em;
+  color:var(--gold-soft);margin:0 0 4px;
+}
+.sheet .sub{font-size:12px;color:var(--paper-dim);margin-bottom:6px}
+.ol-steps{counter-reset:s;list-style:none;padding:0;margin:0}
+.ol-steps li{counter-increment:s;position:relative;padding:0 0 16px 34px;font-size:13.5px;line-height:1.9;color:var(--paper-dim)}
+.ol-steps li::before{
+  content:counter(s);position:absolute;left:0;top:1px;
+  width:23px;height:23px;border-radius:50%;border:1px solid var(--gold);
+  color:var(--gold);font-size:11px;display:flex;align-items:center;justify-content:center;
+}
+.ol-steps li b{color:var(--gold-soft);font-family:var(--serif);font-weight:400;font-size:15px;letter-spacing:.1em;display:block;margin-bottom:3px}
+
+/* ---------- toast ---------- */
+#toast{
+  position:fixed;left:50%;bottom:calc(var(--safe-b) + 84px);transform:translateX(-50%) translateY(14px);
+  background:var(--ink-3);border:1px solid var(--line);color:var(--gold-soft);
+  padding:11px 20px;border-radius:24px;font-size:13.5px;letter-spacing:.06em;
+  opacity:0;pointer-events:none;transition:opacity .28s,transform .28s;z-index:90;white-space:nowrap;
+}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
+
+/* ---------- 子夜模式 ---------- */
+body.theme-midnight{
+  --ink:#000000;
+  --ink-2:#08090D;
+  --ink-3:#101219;
+  --gold:#9C7C34;
+  --gold-soft:#C4A868;
+  --paper:#B9B4A8;
+  --paper-dim:#5F6270;
+  --line:rgba(156,124,52,.16);
+}
+body.theme-midnight::before{
+  background:radial-gradient(circle at 50% 20%,rgba(156,124,52,.08),transparent 58%);
+}
+body.theme-midnight .ring-core .day,
+body.theme-midnight .clock{text-shadow:0 0 18px rgba(156,124,52,.28)}
+body.theme-midnight .glowdot{background:radial-gradient(circle,rgba(156,124,52,.16),transparent 68%)}
+body.theme-midnight .btn{background:none;color:var(--gold-soft);font-weight:400}
+
+/* ---------- 覺受標籤 ---------- */
+.tagwrap{display:flex;flex-wrap:wrap;gap:7px}
+.tagwrap button{
+  padding:7px 13px;border:1px solid var(--line);border-radius:20px;
+  font-size:13px;color:var(--paper-dim);
+}
+.tagwrap button[aria-pressed="true"]{border-color:var(--gold);color:var(--gold-soft);background:rgba(228,179,73,.12)}
+.tagbar{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-size:12.5px}
+.tagbar .nm{width:5.5em;flex:0 0 auto;color:var(--paper-dim);font-family:var(--serif);letter-spacing:.08em}
+.tagbar .tr{flex:1;height:6px;border-radius:3px;background:rgba(232,226,212,.09);overflow:hidden}
+.tagbar .tr i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-soft));border-radius:3px}
+.tagbar .ct{width:2.2em;text-align:right;flex:0 0 auto;color:var(--gold);font-family:var(--serif)}
+
+/* ---------- 百日圖預覽 ---------- */
+#gridPreview{
+  border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:6px;
+  background:var(--ink-2);
+}
+#gridPreview .hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+#gridPreview .hd b{font-family:var(--serif);font-weight:400;font-size:15px;color:var(--gold-soft);letter-spacing:.1em}
+#gridPreview .hd span{font-size:11.5px;color:var(--paper-dim)}
+#gridPreview .meta{font-size:12.5px;color:var(--paper-dim);margin-top:6px}
+#gridPreview .ex{font-size:13.5px;line-height:1.9;margin-top:9px;color:var(--paper)}
+#gridPreview .more{font-size:12px;color:var(--gold);letter-spacing:.14em;margin-top:11px}
+.cell{cursor:pointer}
+.cell.blank{opacity:.4;cursor:default}
+.swipe-hint{
+  text-align:center;font-size:11px;letter-spacing:.18em;color:var(--paper-dim);
+  margin:10px 0 0;
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <header class="topbar">
+    <span class="brand">回光百日</span>
+    <span class="brand-sub">太乙金華宗旨</span>
+  </header>
+
+  <main>
+    <!-- ============ 今日 ============ -->
+    <section class="view on" id="v-today">
+      <div class="ring-wrap">
+        <div class="glowdot"></div>
+        <svg viewBox="0 0 240 240" aria-hidden="true">
+          <defs>
+            <linearGradient id="goldgrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#F3DEA6"/>
+              <stop offset="100%" stop-color="#E4B349"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-bg" cx="120" cy="120" r="104"/>
+          <circle class="ring-fg" id="ringFg" cx="120" cy="120" r="104" stroke-dasharray="0 654"/>
+          <g id="ringTicks"></g>
+        </svg>
+        <div class="ring-core">
+          <span class="day" id="dayNum">1</span>
+          <span class="of">第 <span id="dayNumTxt">1</span> 天 / 百日</span>
+          <span class="stage" id="stageName">垂簾定位</span>
+        </div>
+      </div>
+
+      <div class="stats" style="margin-bottom:16px">
+        <div><b id="stDone">0</b><span>已坐天數</span></div>
+        <div><b id="stMins">0</b><span>累計分鐘</span></div>
+        <div><b id="stStreak">0</b><span>連續日數</span></div>
+      </div>
+
+      <button class="btn" id="btnSit">起 香 靜 坐</button>
+
+      <div class="card" style="margin-top:16px">
+        <div class="eyebrow">本旬功課要領 · <span id="stageIdx">第一旬</span></div>
+        <div class="quote" id="stageFocus"></div>
+      </div>
+
+      <div class="card">
+        <div class="eyebrow">今日一訣</div>
+        <div class="quote" id="dailyQuote"></div>
+        <div class="gloss" id="dailyGloss"></div>
+      </div>
+
+      <button class="btn ghost" id="btnZhiguan">念起時 · 止觀四步</button>
+    </section>
+
+    <!-- ============ 心法 ============ -->
+    <section class="view" id="v-cards">
+      <h2 class="sec">要訣複習</h2>
+      <div class="stats" style="margin-bottom:16px">
+        <div><b id="cdDue">0</b><span>今日待複習</span></div>
+        <div><b id="cdRipe">0</b><span>已熟</span></div>
+        <div><b id="cdAll">0</b><span>心法總數</span></div>
+      </div>
+
+      <div class="flip" id="flip">
+        <div class="flip-in">
+          <div class="face front">
+            <div class="kicker" id="fKicker">天心</div>
+            <div class="title" id="fTitle">—</div>
+            <div class="body" id="fQuote">—</div>
+            <div class="hintline">輕觸卡片 · 看白話與出處</div>
+          </div>
+          <div class="face back">
+            <div class="kicker">白話要旨</div>
+            <div class="plain" id="fGloss" style="margin-top:0;font-size:14.5px;color:var(--paper)">—</div>
+            <div class="hintline" id="fSource">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <button class="btn quiet" id="btnAgain">再 看</button>
+        <button class="btn ghost" id="btnKnown">已 熟</button>
+      </div>
+      <button class="btn quiet" id="btnSkip" style="margin-top:10px">換一張</button>
+      <p class="swipe-hint">卡片左滑 = 再看　右滑 = 已熟</p>
+
+      <h2 class="sec">心法總目</h2>
+      <div id="cardIndex"></div>
+    </section>
+
+    <!-- ============ 歷程 ============ -->
+    <section class="view" id="v-log">
+      <h2 class="sec">築基進度</h2>
+      <div class="stats">
+        <div><b id="lgPct">0%</b><span>完成度</span></div>
+        <div><b id="lgAvg">0</b><span>平均分鐘</span></div>
+        <div><b id="lgProof">0</b><span>證驗次數</span></div>
+      </div>
+
+      <h2 class="sec">百日圖</h2>
+      <div id="grid"></div>
+      <div id="gridPreview"></div>
+
+      <h2 class="sec">昏沉 · 散亂</h2>
+      <div class="card" id="trend"></div>
+
+      <h2 class="sec">覺受統計</h2>
+      <div class="card" id="tagStats"></div>
+
+      <h2 class="sec">溫養隨筆</h2>
+      <div id="notes"></div>
+    </section>
+
+    <!-- ============ 更多 ============ -->
+    <section class="view" id="v-more">
+      <h2 class="sec">靜坐設定</h2>
+      <div class="card">
+        <label class="fld">預設坐香時長</label>
+        <div class="seg" id="segDur">
+          <button data-min="15">15 分</button>
+          <button data-min="25">25 分</button>
+          <button data-min="40">一柱香</button>
+          <button data-min="0">自訂</button>
+        </div>
+        <div id="customDurWrap" style="display:none;margin-top:10px">
+          <input type="number" id="customDur" min="1" max="240" placeholder="分鐘">
+        </div>
+        <p class="muted" style="margin:14px 0 0">「清晨有暇，坐一柱香為妙。過午人事多擾，易落昏沉。」一柱香約四十分鐘，隨力增減即可。</p>
+      </div>
+
+      <div class="card">
+        <label class="fld">引磬鐘聲</label>
+        <div class="seg" id="segBell">
+          <button data-v="1">開</button>
+          <button data-v="0">關</button>
+        </div>
+        <p class="muted" style="margin:12px 0 0">起香三通、換段一聲、收功三通。閉目坐時不必看螢幕。</p>
+        <button class="btn quiet" id="btnTestBell" style="margin-top:12px">試聽一聲</button>
+      </div>
+
+      <h2 class="sec">畫面</h2>
+      <div class="card">
+        <label class="fld">配色</label>
+        <div class="seg" id="segTheme">
+          <button data-v="night">夜天金華</button>
+          <button data-v="midnight">子夜極簡</button>
+        </div>
+        <p class="muted" style="margin:12px 0 0">子夜極簡為純黑底＋暗金微光，適合關燈後或凌晨起坐。</p>
+      </div>
+
+      <h2 class="sec">回光差謬 · 三條歧路</h2>
+      <div id="pitfalls"></div>
+
+      <h2 class="sec">資料</h2>
+      <button class="btn ghost" id="btnExportJson">匯出 JSON 備份</button>
+      <button class="btn ghost" id="btnExportCsv">匯出 CSV（可貼入試算表）</button>
+      <button class="btn quiet" id="btnImport">從 JSON 還原</button>
+      <button class="btn danger" id="btnReset">重新開始百日</button>
+
+      <h2 class="sec">關於</h2>
+      <p class="muted" style="line-height:2">
+        內容錄自《太乙金華宗旨》（呂祖著，清刊本，公有領域）。<br>
+        全部紀錄只存在這台裝置的瀏覽器裡，不會上傳。換機或清快取前請先匯出備份。<br>
+        「一日不行，一日即鬼也。一息行此，一息真仙也。」
+      </p>
+    </section>
+  </main>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-view="v-today">今日<span class="dotmark"></span></button>
+    <button role="tab" aria-selected="false" data-view="v-cards">心法<span class="dotmark"></span></button>
+    <button role="tab" aria-selected="false" data-view="v-log">歷程<span class="dotmark"></span></button>
+    <button role="tab" aria-selected="false" data-view="v-more">更多<span class="dotmark"></span></button>
+  </nav>
+</div>
+
+<!-- ============ 靜坐全屏 ============ -->
+<div id="sit">
+  <div class="sit-top">
+    <span id="sitStage">第一旬</span>
+    <button id="sitStop" style="color:var(--paper-dim);letter-spacing:.2em">收 功</button>
+  </div>
+  <div class="sit-mid">
+    <div class="breath"><span class="clock" id="sitClock">40:00</span></div>
+    <div class="phase-name" id="sitPhase">調攝身心</div>
+    <div class="phase-cue" id="sitCue">先調攝身心，自在安和，放下萬緣，一絲不掛。</div>
+    <div class="phase-bar" id="sitBar"></div>
+  </div>
+  <button class="btn ghost" id="sitZhiguan">念起時 · 止觀四步</button>
+</div>
+
+<!-- ============ 通用彈層 ============ -->
+<div class="modal" id="modal">
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* =====================================================================
+   回光百日 — 太乙金華宗旨百日築基
+   單檔 HTML PWA / ES5 / iOS WebView 相容
+   ===================================================================== */
+(function(){
+"use strict";
+
+/* ---------------- 儲存層（localStorage + 記憶體後備） ---------------- */
+var KEY = "tyjh.golden-flower.v1";
+var mem = null;
+function readStore(){
+  if(mem) return mem;
+  var raw = null;
+  try{ raw = window.localStorage.getItem(KEY); }catch(e){}
+  if(raw){
+    try{ mem = JSON.parse(raw); }catch(e){ mem = null; }
+  }
+  if(!mem) mem = { days:{}, cards:{}, prefs:{ dur:40 }, created: Date.now() };
+  if(!mem.days) mem.days = {};
+  if(!mem.cards) mem.cards = {};
+  if(!mem.prefs) mem.prefs = { dur:40 };
+  if(typeof mem.prefs.bell === "undefined") mem.prefs.bell = 1;
+  if(!mem.prefs.theme) mem.prefs.theme = "night";
+  return mem;
+}
+function saveStore(){
+  try{ window.localStorage.setItem(KEY, JSON.stringify(mem)); }
+  catch(e){ /* 私密瀏覽或配額滿：本次仍在記憶體中運作 */ }
+}
+var S = readStore();
+
+/* ---------------- 十旬功課 ---------------- */
+var STAGES = [
+ {n:"第一旬", t:"垂簾定位", f:"垂簾定位，聽息無聲。眼開失之外走易散亂，太閉失之內馳易昏沉。最初入靜處舉目一視鼻端，定個準則便放下。"},
+ {n:"第二旬", t:"繫念緣中", f:"繫念緣中，聽息無聲。不必言頭中，但於兩眉中間齊平處繫念。聽惟聽其無聲，愈放愈微，愈微愈靜，真息現前。"},
+ {n:"第三旬", t:"心息相依", f:"心息相依，如雞抱卵。心一則動氣也，息細則心細。暖氣溫養其殼，一心注焉，暖氣晝夜無間，元神自然活潑。"},
+ {n:"第四旬", t:"內視內聽", f:"內視內聽，防範走漏。目惟內視而不外視，耳惟內聽而不外聽。聽者聽其無聲，視者視其無形，則中不昏沉矣。"},
+ {n:"第五旬", t:"止觀雙修", f:"止觀雙修，正觀除念。念起時究此念在何處，從何起，從何滅，反復推究，了不可得。即仍舊綿綿去止，定慧雙修。"},
+ {n:"第六旬", t:"惺惺不昧", f:"惺惺不昧，若存若亡。萬緣放下之中，惺惺自若。不可以意興承當。真消息在若存若亡之間，以有意無意得之。"},
+ {n:"第七旬", t:"晝得夜用", f:"晝得夜用，純想即飛。百日只在得力，晝間得力，夜中受用；夜中得力，晝間受用。宗旨行去，別無求進之法。"},
+ {n:"第八旬", t:"遍體陽和", f:"遍體陽和，虛室生白。靜中綿綿無間，神情悅豫，如醉如浴。目光騰騰，滿前皆白，虛室生白，內外通明。"},
+ {n:"第九旬", t:"氣通周天", f:"心即璿璣，氣通周天。心即璿璣，氣即眾星。無心而守，無意而行。調適自然，一時雲蒸雨降，草木酣適。"},
+ {n:"第十旬", t:"真空無心", f:"歸於自然，真空無心。用心即為識光，放下乃為性光。心空則丹結，心淨則丹。空忘其空，斯名真空，眾妙歸根。"}
+];
+
+/* ---------------- 心法卡 ---------------- */
+var CARDS = [
+ {id:"tx1",g:"天心",t:"天心居日月中",q:"天心居日月中。方寸中具有郁羅肖台之勝，乃至虛至靈之神所住。",p:"兩眉之間、方寸之地就是天心，是元神安坐的地方。儒家叫「虛中」，釋家叫「靈台」，道家叫「祖土」「玄關」。修法的第一件事是知道光該回到哪裡。",s:"第一章 天心"},
+ {id:"tx2",g:"天心",t:"金華即光",q:"金華即光也。取象於金華，亦秘一光字在內，是先天太乙之真氣。",p:"「金華」不是別的東西，就是「光」——先天太乙之真氣。全部功夫都是在處理這一點光的去向。",s:"第一章 天心"},
+ {id:"tx3",g:"天心",t:"光乃主人翁",q:"蓋天心猶宅舍一般，光乃主人翁也。故一回光，周身之氣皆上朝。",p:"天心是屋子，光是主人。主人一回家，全身的氣就像萬國執玉帛來朝一樣自然歸位——不必一處一處去搬運。",s:"第一章 天心"},
+ {id:"tx4",g:"天心",t:"人倫日用間立定腳跟",q:"必於人倫日用間，立定腳跟，方可修真悟性。",p:"先把日常做人做事站穩了，才談得上修真。這不是客套話，是入門條件。",s:"第一章 天心"},
+
+ {id:"ys1",g:"元神識神",t:"元神居方寸，識神居下心",q:"凡人投胎時，元神居方寸，而識神則居下心。",p:"元神在眉心，寂然不動；識神在胸腔血肉之心，隨外境生滅。聞驚而跳、見美色則眩的，都是識神在當家。",s:"第二章 元神識神"},
+ {id:"ys2",g:"元神識神",t:"太阿倒置",q:"下識心，如強藩悍將，欺天君暗弱，便遙執紀綱，久之太阿倒置矣。",p:"識神像是一個坐大的藩鎮，趁天君（元神）昏弱就把權柄拿走了。修行不是新增什麼，是把主客關係擺回去。",s:"第二章 元神識神"},
+ {id:"ys3",g:"元神識神",t:"凝守元宮",q:"今凝守元宮，如英明之主在上，二目回光，如左右有大臣盡心輔弼。",p:"元神端坐、雙目回光，就像明主在上、賢臣在側；內政一肅，那些奸雄自然倒戈乞命——雜念不必一個個殺。",s:"第二章 元神識神"},
+ {id:"ys4",g:"元神識神",t:"魂好生，魄望死",q:"魂在天心，陽也，輕清之照也。魄陰也，沉濁之氣也。魂好生，魄望死。",p:"一切好色動氣的衝動都是魄在作為，也就是識神。回光就是煉魂制魄——所以說古人出世法，不過消魄全魂而已。",s:"第二章 元神識神"},
+
+ {id:"hg1",g:"回光守中",t:"全用逆法",q:"故金華之道，全用逆法。回光者，非回一身之精華，直回造化之真氣。",p:"平常人耳目逐物而動，精華一路往外漏；回光是把這股流向倒轉回來。不是省著用，是換方向。",s:"第三章 回光守中"},
+ {id:"hg2",g:"回光守中",t:"垂簾得中",q:"大開失之外走，易於散亂。太閉失之內馳，易於昏沉。惟垂簾得中，恰好望見鼻端，故取以為准。",p:"眼睛微閉到剛好看得見鼻尖的位置。眼太開會散，太閉會昏——鼻端只是拿來定個垂直基準，不是叫你死盯著鼻子。",s:"第三章 回光守中"},
+ {id:"hg3",g:"回光守中",t:"泥水匠的準繩",q:"如泥水匠人用線一般，彼自起手一掛，便依了做上去，不只管把線看也。",p:"看鼻端只在最初入靜時舉目一視，定個準則便放下。像泥水匠掛好垂線就依線砌牆，不會一直盯著線看。",s:"第三章 回光守中"},
+ {id:"hg4",g:"回光守中",t:"繫心緣中",q:"系心緣中，不必言頭中，但於兩眉中間，齊平處繫念便了。光是活潑潑的東西，繫念兩眉中間，光自然透入。",p:"意念輕輕掛在兩眉齊平處就好，不必刻意注想中宮。光會自己透進來，不勞你注射。「緣中」是端倪，不是一個要死守的定點。",s:"第三章 回光守中"},
+ {id:"hg5",g:"回光守中",t:"止觀雙修即回光",q:"止而繼之以觀，觀而繼之以止，是定慧雙修，此為回光。回者止也，光者觀也。",p:"只止不觀，是有回而無光（成了死守）；只觀不止，是有光而無回（成了散亂）。兩者交替往復，才叫回光。",s:"第三章 回光守中"},
+ {id:"hg6",g:"回光守中",t:"覓心了不可得",q:"當究此念在何處，從何起，從何滅，反復推究，了不可得。",p:"念頭起來時不要仍舊死坐，也不要壓它。追問它從哪起、往哪滅，追到底會發現抓不著——這一刻就是正觀。反過來討「起處」的起處，就落入邪觀了。",s:"第三章 回光守中"},
+
+ {id:"tt1",g:"回光調息",t:"息者自心也",q:"無過寄心於息，息者自心也。自心為息，心一動，而即有氣，氣本心之化也。",p:"心一動就有氣，一天幾萬息就有幾萬妄念。既然無法無念、也無法無息，那就「即其病而為藥」——把心寄在息上。",s:"第四章 回光調息"},
+ {id:"tt2",g:"回光調息",t:"聽惟聽其無聲",q:"息之出入，不可使耳聞，聽惟聽其無聲也。一有聲，便粗浮而不入細。",p:"用耳光內聽呼吸，聽的是「聽不見」。一旦聽出聲音來，表示息還粗浮。就耐心輕輕微微些——愈放愈微，愈微愈靜。",s:"第四章 回光調息"},
+ {id:"tt3",g:"回光調息",t:"雞能抱卵心常聽",q:"雞能抱卵心常聽，此要訣也。心入則氣入，得暖氣而生矣。",p:"母雞孵蛋，暖氣只能溫殼、進不了蛋中，靠的是「一心注焉」。就算出外覓食也常作側耳之勢，神注未曾少間——調息要的就是這種不間斷的傾聽。",s:"第四章 回光調息"},
+ {id:"tt4",g:"回光調息",t:"心細則息細",q:"心細則息細，心一則動氣也；息細則心細，氣一則動心也。",p:"心與息互為因果。定心無處下手時，就借氣為端倪——這就是所謂「純氣之守」。",s:"第四章 回光調息"},
+ {id:"tt5",g:"回光調息",t:"昏沉與散亂",q:"散亂者，神馳也；昏沉者，神未清也。散亂易治，而昏沉難醫。",p:"散亂還有魂在，收一收、整一整就好；昏沉是純陰用事、麻木不仁。知道自己昏沉，就已經不是全昏沉了。真想睡就起來散步，神清再坐。",s:"第四章 回光調息"},
+
+ {id:"cm1",g:"回光差謬",t:"落於蘊界",q:"所謂蘊界者，乃五陰魔用事。如一般入定，而槁木死灰之意多，大地陽春之意少。",p:"第一條歧路：坐成一片枯寂。氣冷、息沉、景象寒衰，久之墮為木石。靜中要有惺惺不昧的活意，不是把人坐死。",s:"第五章 回光差謬"},
+ {id:"cm2",g:"回光差謬",t:"隨於萬緣",q:"如一入靜，而無端眾緒忽至，欲卻之不能，隨之反覺順適，此名主為奴役。",p:"第二條歧路：一坐下來雜緒紛湧，趕也趕不走，順著它反而舒服——這就是主人被奴僕使喚了，久之落於色欲界。",s:"第五章 回光差謬"},
+ {id:"cm3",g:"回光差謬",t:"無記空",q:"靜時正要得機得竅，不可坐在無事中裏，所謂無記空也。",p:"第三條歧路：坐在一種什麼都沒有的空茫裡發呆。靜坐要「得機得竅」，不是把時間熬過去。",s:"第五章 回光差謬"},
+ {id:"cm4",g:"回光差謬",t:"若存若亡",q:"真消息，在若存若亡之間，以有意無意得之。惺惺不昧之中，放下自若也。",p:"不可以「意興承當」——太當真、太用力就出事；但也不是不認真。分寸在有意無意之間。",s:"第五章 回光差謬"},
+
+ {id:"zy1",g:"回光證驗",t:"神入谷中",q:"一則坐去，神入谷中，聞人說話，如隔里許，一一明瞭，而聲入皆如穀中答響。",p:"耳根的證驗：外面說話聽起來像隔了一里多路，卻字字清楚，聲音入耳都像空谷回音。所謂「未嘗不聞，我未嘗一聞」。",s:"第六章 回光證驗"},
+ {id:"zy2",g:"回光證驗",t:"虛室生白",q:"一則靜中，目光騰騰，滿前皆白，如在雲中，開眼覓身，無從覓視，此為虛室生白，內外通明。",p:"眼根的證驗：眼前光明騰騰、滿前皆白，像置身雲霧之中；想睜眼找自己的身體卻找不著。此即吉祥止止之象。",s:"第六章 回光證驗"},
+ {id:"zy3",g:"回光證驗",t:"神歸頂天",q:"一則靜中，肉身絪縕，如綿如玉，坐中若留不住，而騰騰上浮，此為神歸頂天。",p:"身根的證驗：肉身變得極細緻，如綿如玉，坐中感覺留不住、騰騰欲浮。三者都是現在可驗的，不必等來世。",s:"第六章 回光證驗"},
+ {id:"zy4",g:"回光證驗",t:"冷暖自知",q:"此事如人飲水，冷暖自知，須自己信得過方真。",p:"證驗隨人根器各現殊勝，說不盡的。別拿別人的境界對照自己，也別拿小根小器承當——自己信得過才算數。",s:"第六章 回光證驗"},
+
+ {id:"hf1",g:"回光活法",t:"事來要應過",q:"事來要應過，物來要識破。子以正念治事，即光不為物轉，光即自回。",p:"回光要循循然行去，不要廢棄正業。用正念處事，光就不被物牽走，自己會回來——這是無相之回光。",s:"第七章 回光活法"},
+ {id:"hf2",g:"回光活法",t:"隨地回光",q:"日用間，能刻刻隨事返照，不著一毫人我相，便是隨地回光，此第一妙用。",p:"日常做事時刻刻返照，不掛一點人我相，這才是第一等的用法。清晨能遣盡諸緣，靜坐一兩時最妙。",s:"第七章 回光活法"},
+ {id:"hf3",g:"回光活法",t:"一日不靜坐",q:"一日不靜坐，此光流轉，何所底止！若一刻能靜坐，萬劫千生，從此了徹。",p:"光不在身中、也不在身外，山河大地日月照臨無非此光。一日不坐，這光就一路流轉沒有著落；能坐一刻，就從這一刻了徹。",s:"第三章 回光守中"},
+
+ {id:"zj1",g:"百日築基",t:"迴風混合",q:"《心印經》云：「迴風混合，百日功靈。」總之立基百日，方有真光。",p:"回之百日，精氣自足、真陽自生，水中自有真火。以此持行，自然交媾、自然結胎——不必刻意作意見，一作意就是外道。",s:"第九章 百日築基"},
+ {id:"zj2",g:"百日築基",t:"百日非百日",q:"百日立基，非百日也。一日立基，非一日也。一息立基，非呼吸之謂也。",p:"「百日」不是日曆上的一百天，講的是「一息」之間的純粹專注。一息若真能收斂元神元氣元精，一息即等同百日之功。",s:"第九章 百日築基"},
+ {id:"zj3",g:"百日築基",t:"晝夜互用",q:"百日只在得力，晝間得力，夜中受用；夜中得力，晝間受用。",p:"白天的功夫晚上見效，晚上的功夫白天見效。這是玄中玄，說不明白的，見性才知道。",s:"第九章 百日築基"},
+
+ {id:"xg1",g:"性光識光",t:"如鏡無心而照",q:"凡人視物，任眼一照去，不及分別，此為性光，如鏡之無心而照也。",p:"眼光一照、還來不及分別的那一瞬是性光；稍過一刻起了分別，就成了識光。鏡子有了影就不是鏡子了。",s:"第十章 性光識光"},
+ {id:"xg2",g:"性光識光",t:"毫釐千里",q:"用心即為識光，放下乃為性光。毫釐千里，不可不辨。",p:"見光時最容易出錯：若刻意執著、起心動念去抓，光便杳無可覓。不是光沒了，是光已經變成識了。",s:"第十章 性光識光"},
+ {id:"xg3",g:"性光識光",t:"心空則丹結",q:"識不斷，則神不生；心不空，則丹不結。心淨則丹，心空即藥。",p:"不著一物，是名心淨；不留一物，是名心空。見到「空」還當成一個東西，那還不算空；空忘其空，才叫真空。",s:"第十章 性光識光"},
+
+ {id:"zt1",g:"周天",t:"無心而守",q:"周天非以氣作主，以心到為妙訣。若畢竟如何周天，是助長也，無心而守，無意而行。",p:"周天不是靠搬運氣。刻意想著「該怎麼周天」就是揠苗助長。許多丹書強調搬運心腎、強行引導，皆是妄想。",s:"第十二章 周天"},
+ {id:"zt2",g:"周天",t:"心即璿璣",q:"心即璿璣，氣即眾星。吾身之氣，四肢百體，原是貫通，不要十分著力。",p:"仰觀天上三百六十五度刻刻變遷，而斗柄終古不動——心就是那個斗柄。身上的氣本來就通，不必費力。",s:"第十二章 周天"},
+ {id:"zt3",g:"周天",t:"自然交媾",q:"果能陰陽交泰，大地陽和，我之中宮正位，萬物一時暢遂，即丹經沐浴法也。",p:"心氣極靜（大定）之後，一身自然旋運，像天時陰陽交泰、雲蒸雨降、草木酣適，這才是真正的大周天。不自然，終不能合。",s:"第十二章 周天"},
+
+ {id:"zh1",g:"總持",t:"三教一句",q:"總之三教不過一句，為出死入生之神丹。「神丹」為何？曰一切處無心而已。",p:"儒家的「致知」、釋家的「觀心」、道家的「內觀」，講的是同一件事。吾道最秘者沐浴，如此一部全功，不過「心空」二字。",s:"第八章 逍遙訣"},
+ {id:"zh2",g:"總持",t:"一息真仙",q:"一日不行，一日即鬼也。一息行此，一息真仙也。勉之！勉之！",p:"心靜照定為基，心忘氣凝為效，氣息心空為丹成，心氣渾一為溫養，明心見性為了道。錯過光陰可惜。",s:"第十三章 勸世歌"}
+];
+
+/* ---------------- 靜坐引導階段 ---------------- */
+var PHASES = [
+ {w:.07,n:"調攝身心",c:"先調攝身心，自在安和，放下萬緣，一絲不掛。"},
+ {w:.07,n:"垂簾定端",c:"眼微閉得中，舉目一視鼻端，定個準則便放下。不必管它。"},
+ {w:.09,n:"繫念緣中",c:"意念輕輕繫在兩眉中間齊平處。光是活潑潑的，自會透入，不可用力死守。"},
+ {w:.68,n:"心息相依",c:"耳光內聽呼吸，聽惟聽其無聲。愈放愈微，愈微愈靜。如雞抱卵，一心注焉。"},
+ {w:.09,n:"收 功",c:"緩緩開目，光回祖竅，萬神安。起身後事來要應過，物來要識破。"}
+];
+
+var ZHIGUAN = [
+ {t:"察覺起念",d:"發現雜念、雜想，或對冷熱痛癢、見光見景生起喜歡厭惡期待——立刻自覺：這已從「性光」落入「識光」的分別了。"},
+ {t:"正觀推究",d:"不壓制，也不跟著跑。轉向它，反覆追究：這念頭在何處？從何而起？往何處而滅？追到底，了不可得。"},
+ {t:"心空即藥",d:"推究到了不可得，就不要再去找它的起處。順勢連對「空」的執著也放下，不留一物在心頭。"},
+ {t:"綿綿去止",d:"念頭平息後不可枯坐，立刻把心神重新寄在呼吸上。回到心息相依的綿綿靜定——這就是定慧雙修。"}
+];
+
+var BOX_DAYS = [1,3,7,21,60];
+var DAY_MS = 86400000;
+
+/* ---------------- 修煉覺受標籤 ---------------- */
+var TAGS = [
+ {k:"nuan", n:"身暖"},
+ {k:"weiq", n:"氣微"},
+ {k:"xibi", n:"鼻息細微"},
+ {k:"guang",n:"光景微現"},
+ {k:"fei",  n:"雜念如沸"},
+ {k:"anhe", n:"遍體陽和"},
+ {k:"yueyu",n:"神情悅豫"},
+ {k:"mian", n:"綿綿無間"},
+ {k:"leng", n:"氣冷息沉"},
+ {k:"ma",   n:"麻木不仁"},
+ {k:"fu",   n:"身輕欲浮"},
+ {k:"tong", n:"腿麻腰痠"}
+];
+function tagName(k){
+  for(var i=0;i<TAGS.length;i++){ if(TAGS[i].k === k) return TAGS[i].n; }
+  return k;
+}
+
+/* ---------------- 引磬（Web Audio） ---------------- */
+var Bell = (function(){
+  var ctx = null;
+  function ac(){
+    if(ctx) return ctx;
+    var C = window.AudioContext || window.webkitAudioContext;
+    if(!C) return null;
+    try{ ctx = new C(); }catch(e){ ctx = null; }
+    return ctx;
+  }
+  /* 單擊：基音 + 兩個非整數倍泛音，指數衰減，近似引磬的金屬餘韻 */
+  function strike(at, base, gainPeak, dur){
+    var c = ac(); if(!c) return;
+    var parts = [[1, 1], [2.76, .42], [5.4, .18]];
+    for(var i=0;i<parts.length;i++){
+      var osc = c.createOscillator();
+      var g = c.createGain();
+      osc.type = "sine";
+      osc.frequency.value = base * parts[i][0];
+      var pk = gainPeak * parts[i][1];
+      g.gain.setValueAtTime(0.0001, at);
+      g.gain.exponentialRampToValueAtTime(pk, at + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, at + dur * (i === 0 ? 1 : 0.55));
+      osc.connect(g); g.connect(c.destination);
+      osc.start(at);
+      osc.stop(at + dur + 0.1);
+    }
+  }
+  return {
+    unlock: function(){
+      var c = ac(); if(!c) return;
+      if(c.state === "suspended"){ try{ c.resume(); }catch(e){} }
+    },
+    /* n 通，gap 為間隔秒數 */
+    ring: function(n, base, gap){
+      if(!S.prefs.bell) return;
+      var c = ac(); if(!c) return;
+      this.unlock();
+      var t = c.currentTime + 0.05;
+      for(var i=0;i<n;i++){
+        strike(t + i * (gap || 2.1), base || 660, 0.42, 3.4);
+      }
+    },
+    soft: function(){
+      if(!S.prefs.bell) return;
+      var c = ac(); if(!c) return;
+      this.unlock();
+      strike(c.currentTime + 0.05, 880, 0.20, 2.0);
+    },
+    demo: function(){
+      var c = ac();
+      if(!c){ toast("這台裝置不支援 Web Audio"); return; }
+      this.unlock();
+      strike(c.currentTime + 0.05, 660, 0.42, 3.4);
+    }
+  };
+})();
+
+/* ---------------- 小工具 ---------------- */
+function $(id){ return document.getElementById(id); }
+function el(tag,cls,txt){
+  var e = document.createElement(tag);
+  if(cls) e.className = cls;
+  if(txt !== undefined && txt !== null) e.textContent = txt;
+  return e;
+}
+function pad(n){ return n < 10 ? "0" + n : "" + n; }
+function todayKey(){
+  var d = new Date();
+  return d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate());
+}
+function keyToDate(k){
+  var p = k.split("-");
+  return new Date(+p[0], +p[1]-1, +p[2]);
+}
+var toastT = null;
+function toast(msg){
+  var t = $("toast");
+  t.textContent = msg;
+  t.className = "on";
+  if(toastT) clearTimeout(toastT);
+  toastT = setTimeout(function(){ t.className = ""; }, 2200);
+}
+
+/* ---------------- 進度計算 ---------------- */
+function doneDays(){
+  var arr = [], k;
+  for(k in S.days){ if(S.days.hasOwnProperty(k)) arr.push(S.days[k]); }
+  arr.sort(function(a,b){ return a.n - b.n; });
+  return arr;
+}
+function currentDay(){
+  var d = doneDays();
+  var n = d.length + 1;
+  return n > 100 ? 100 : n;
+}
+function stageOf(day){ return STAGES[Math.floor((day-1)/10)]; }
+function totalMins(){
+  var d = doneDays(), s = 0, i;
+  for(i=0;i<d.length;i++) s += (d[i].mins || 0);
+  return s;
+}
+function proofCount(){
+  var d = doneDays(), s = 0, i;
+  for(i=0;i<d.length;i++) s += (d[i].proofs ? d[i].proofs.length : 0);
+  return s;
+}
+function streak(){
+  var d = doneDays(), i, seen = {}, n;
+  for(i=0;i<d.length;i++){ if(d[i].date) seen[d[i].date] = 1; }
+  var cur = new Date(); cur.setHours(0,0,0,0);
+  var k = todayKey();
+  if(!seen[k]){ cur = new Date(cur.getTime() - DAY_MS); }
+  n = 0;
+  while(true){
+    var kk = cur.getFullYear() + "-" + pad(cur.getMonth()+1) + "-" + pad(cur.getDate());
+    if(seen[kk]){ n++; cur = new Date(cur.getTime() - DAY_MS); }
+    else break;
+    if(n > 400) break;
+  }
+  return n;
+}
+
+/* ---------------- 今日畫面 ---------------- */
+var CIRC = 2 * Math.PI * 104;
+function buildTicks(){
+  var g = $("ringTicks"), i;
+  g.innerHTML = "";
+  for(i=0;i<10;i++){
+    var a = (i/10) * Math.PI * 2;
+    var x1 = 120 + Math.cos(a) * 96, y1 = 120 + Math.sin(a) * 96;
+    var x2 = 120 + Math.cos(a) * 112, y2 = 120 + Math.sin(a) * 112;
+    var ln = document.createElementNS("http://www.w3.org/2000/svg","line");
+    ln.setAttribute("x1",x1); ln.setAttribute("y1",y1);
+    ln.setAttribute("x2",x2); ln.setAttribute("y2",y2);
+    ln.setAttribute("class","ring-tick");
+    ln.setAttribute("data-i",i);
+    g.appendChild(ln);
+  }
+}
+function renderToday(){
+  var day = currentDay();
+  var done = doneDays().length;
+  var st = stageOf(day);
+
+  $("dayNum").textContent = day;
+  $("dayNumTxt").textContent = day;
+  $("stageName").textContent = st.t;
+  $("stageIdx").textContent = st.n;
+  $("stageFocus").textContent = st.f;
+
+  var frac = done / 100;
+  $("ringFg").setAttribute("stroke-dasharray", (CIRC * frac).toFixed(1) + " " + CIRC.toFixed(1));
+
+  var ticks = $("ringTicks").childNodes, i;
+  for(i=0;i<ticks.length;i++){
+    ticks[i].setAttribute("class", (done >= (i+1)*10) ? "ring-tick past" : "ring-tick");
+  }
+
+  $("stDone").textContent = done;
+  $("stMins").textContent = totalMins();
+  $("stStreak").textContent = streak();
+
+  var c = CARDS[ (new Date().getDate() + new Date().getMonth()*31) % CARDS.length ];
+  $("dailyQuote").textContent = c.q;
+  $("dailyGloss").textContent = c.p + "　—— " + c.s;
+}
+
+/* ---------------- 心法複習 ---------------- */
+var curCard = null;
+function cardState(id){
+  if(!S.cards[id]) S.cards[id] = { box:0, due:0 };
+  return S.cards[id];
+}
+function dueCards(){
+  var now = Date.now(), out = [], i;
+  for(i=0;i<CARDS.length;i++){
+    if(cardState(CARDS[i].id).due <= now) out.push(CARDS[i]);
+  }
+  return out;
+}
+function pickCard(){
+  var pool = dueCards();
+  if(!pool.length) pool = CARDS.slice(0);
+  var next = pool[Math.floor(Math.random() * pool.length)];
+  if(pool.length > 1 && curCard && next.id === curCard.id){
+    next = pool[(pool.indexOf(next) + 1) % pool.length];
+  }
+  curCard = next;
+  showCard();
+}
+function showCard(){
+  if(!curCard) return;
+  var st = cardState(curCard.id);
+  $("flip").className = "flip";
+  $("fKicker").textContent = curCard.g;
+  $("fTitle").textContent = curCard.t;
+  $("fQuote").textContent = curCard.q;
+  $("fGloss").textContent = curCard.p;
+  $("fSource").textContent = curCard.s + "　·　熟度 " + st.box + " / 5";
+  renderCardStats();
+}
+function renderCardStats(){
+  var ripe = 0, i;
+  for(i=0;i<CARDS.length;i++){ if(cardState(CARDS[i].id).box >= 3) ripe++; }
+  $("cdDue").textContent = dueCards().length;
+  $("cdRipe").textContent = ripe;
+  $("cdAll").textContent = CARDS.length;
+}
+function gradeCard(known){
+  if(!curCard) return;
+  var st = cardState(curCard.id);
+  if(known){
+    st.box = Math.min(st.box + 1, 5);
+    st.due = Date.now() + BOX_DAYS[Math.min(st.box, BOX_DAYS.length) - 1] * DAY_MS;
+    toast("已熟 · " + BOX_DAYS[Math.min(st.box, BOX_DAYS.length) - 1] + " 天後再現");
+  }else{
+    st.box = 0; st.due = 0;
+    toast("留在今日重看");
+  }
+  saveStore();
+  pickCard();
+}
+function renderCardIndex(){
+  var wrap = $("cardIndex"), groups = [], i, g;
+  wrap.innerHTML = "";
+  for(i=0;i<CARDS.length;i++){
+    if(groups.indexOf(CARDS[i].g) < 0) groups.push(CARDS[i].g);
+  }
+  for(g=0;g<groups.length;g++){
+    (function(gname){
+      var h = el("div","eyebrow", gname);
+      h.style.marginTop = "18px";
+      wrap.appendChild(h);
+      for(var j=0;j<CARDS.length;j++){
+        if(CARDS[j].g !== gname) continue;
+        (function(cd){
+          var it = el("div","card-list-item");
+          var t = el("div","t", cd.t);
+          var box = cardState(cd.id).box;
+          if(box >= 3){
+            var pill = el("span","box-pill","熟 " + box);
+            t.appendChild(pill);
+          }
+          it.appendChild(t);
+          it.appendChild(el("div","q", cd.q));
+          it.addEventListener("click", function(){
+            curCard = cd; showCard();
+            document.querySelector("main").scrollTop = 0;
+            toast("已載入這張卡");
+          });
+          wrap.appendChild(it);
+        })(CARDS[j]);
+      }
+    })(groups[g]);
+  }
+}
+
+/* ---------------- 歷程 ---------------- */
+function renderLog(){
+  var d = doneDays(), i;
+  var done = d.length;
+  $("lgPct").textContent = done + "%";
+  $("lgAvg").textContent = done ? Math.round(totalMins() / done) : 0;
+  $("lgProof").textContent = proofCount();
+
+  /* 百日圖 */
+  var grid = $("grid");
+  grid.innerHTML = "";
+  var byN = {};
+  for(i=0;i<d.length;i++) byN[d[i].n] = d[i];
+  var cur = currentDay();
+  for(var s=0;s<10;s++){
+    var wrap = el("div","cellwrap");
+    wrap.appendChild(el("div","xun-label", STAGES[s].n + "　" + STAGES[s].t));
+    var g = el("div","grid100");
+    for(var k=1;k<=10;k++){
+      (function(n){
+        var rec = byN[n];
+        var isNext = (n === cur && !rec);
+        var cls = "cell" + (rec ? " done" : "") + (isNext ? " today" : "") +
+                  (rec && rec.proofs && rec.proofs.length ? " proof" : "") +
+                  (!rec && !isNext ? " blank" : "");
+        var c = el("div", cls, String(n));
+        if(rec){
+          c.addEventListener("click", function(){ showPreview(rec); });
+        }else if(isNext){
+          c.addEventListener("click", function(){
+            openLogSheet(S.prefs.dur || 40);
+          });
+        }
+        g.appendChild(c);
+      })(s*10 + k);
+    }
+    wrap.appendChild(g);
+    grid.appendChild(wrap);
+  }
+  showPreview(d.length ? d[d.length-1] : null);
+
+  /* 昏沉散亂趨勢 */
+  var tr = $("trend");
+  tr.innerHTML = "";
+  if(!d.length){
+    tr.appendChild(el("div","empty","坐過之後，這裡會顯示昏沉與散亂的變化。"));
+  }else{
+    var recent = d.slice(Math.max(0, d.length - 20));
+    var mk = function(label, key, color){
+      var row = el("div");
+      row.style.marginBottom = "14px";
+      var lab = el("div","eyebrow", label + "（近 " + recent.length + " 座）");
+      row.appendChild(lab);
+      var bar = el("div");
+      bar.style.display = "flex";
+      bar.style.alignItems = "flex-end";
+      bar.style.gap = "3px";
+      bar.style.height = "44px";
+      for(var i=0;i<recent.length;i++){
+        var v = recent[i][key] || 0;
+        var b = el("div");
+        b.style.flex = "1";
+        b.style.height = Math.max(3, v * 14) + "px";
+        b.style.background = color;
+        b.style.opacity = v ? (0.35 + v * 0.2) : 0.2;
+        b.style.borderRadius = "2px";
+        bar.appendChild(b);
+      }
+      row.appendChild(bar);
+      tr.appendChild(row);
+    };
+    mk("昏沉", "hun", "#7C8AAE");
+    mk("散亂", "san", "#E4B349");
+    tr.appendChild(el("p","muted","0 無　1 微　2 中　3 重。昏沉重時改在清晨坐；散亂重時回到聽息。"));
+  }
+
+  /* 覺受統計 */
+  renderTagStats(d);
+
+  /* 隨筆 */
+  var nt = $("notes");
+  nt.innerHTML = "";
+  var any = false;
+  for(i = d.length - 1; i >= 0; i--){
+    if(!d[i].note) continue;
+    any = true;
+    var c = el("div","card");
+    c.appendChild(el("div","eyebrow","第 " + d[i].n + " 天　" + (d[i].date || "")));
+    var body = el("div");
+    body.style.fontSize = "14px";
+    body.style.lineHeight = "1.9";
+    body.textContent = d[i].note;
+    c.appendChild(body);
+    nt.appendChild(c);
+  }
+  if(!any) nt.appendChild(el("div","empty","坐中的覺受、昏沉散亂的起因，隨手記下就好。"));
+}
+
+var LV = ["無","微","中","重"];
+var PROOF_NAMES = { g:"神入谷中", b:"虛室生白", d:"神歸頂天" };
+
+function proofText(rec){
+  var pr = rec.proofs || [], names = [], i;
+  for(i=0;i<pr.length;i++) names.push(PROOF_NAMES[pr[i]]);
+  return names.join("、");
+}
+function tagText(rec){
+  var tg = rec.tags || [], names = [], i;
+  for(i=0;i<tg.length;i++) names.push(tagName(tg[i]));
+  return names.join("、");
+}
+
+/* 點格子先在原地顯示摘要，不必開彈窗 */
+function showPreview(rec){
+  var box = $("gridPreview");
+  box.innerHTML = "";
+  if(!rec){
+    box.appendChild(el("div","empty","點百日圖上的格子看當天摘要；點今日那格可以直接補登。"));
+    return;
+  }
+  var hd = el("div","hd");
+  hd.appendChild(el("b","","第 " + rec.n + " 天　" + stageOf(rec.n).t));
+  hd.appendChild(el("span","", (rec.date || "") + "　" + (rec.mins || 0) + " 分"));
+  box.appendChild(hd);
+
+  var meta = "昏沉 " + LV[rec.hun || 0] + "　·　散亂 " + LV[rec.san || 0];
+  var tg = tagText(rec);
+  if(tg) meta += "　·　" + tg;
+  box.appendChild(el("div","meta", meta));
+
+  var pf = proofText(rec);
+  if(pf){
+    var p = el("div","meta", "證驗：" + pf);
+    p.style.color = "var(--gold)";
+    box.appendChild(p);
+  }
+  if(rec.note){
+    var ex = rec.note.length > 90 ? rec.note.slice(0, 90) + "⋯" : rec.note;
+    box.appendChild(el("div","ex", ex));
+  }
+  var more = el("div","more", rec.note && rec.note.length > 90 ? "看全文 · 修改 ›" : "修改這一天 ›");
+  more.addEventListener("click", function(){ showDayDetail(rec); });
+  box.appendChild(more);
+}
+
+function showDayDetail(rec){
+  var h = "";
+  h += "<h3>第 " + rec.n + " 天</h3>";
+  h += '<p class="sub">' + (rec.date || "") + "　·　" + (rec.mins || 0) + " 分鐘</p>";
+  h += '<p class="muted" style="margin:14px 0 0">昏沉 ' + LV[rec.hun || 0] + "　·　散亂 " + LV[rec.san || 0] + "</p>";
+  var tg = tagText(rec);
+  if(tg) h += '<p class="muted" style="margin:6px 0 0">覺受：' + tg + "</p>";
+  var pf = proofText(rec);
+  if(pf) h += '<p style="color:var(--gold-soft);font-family:var(--serif);letter-spacing:.12em;margin:10px 0 0">證驗：' + pf + "</p>";
+  if(rec.note){
+    h += '<div class="card" style="margin-top:16px"><div style="font-size:14px;line-height:1.95"></div></div>';
+  }
+  openSheet(h, function(sheet){
+    if(rec.note) sheet.querySelector(".card div").textContent = rec.note;
+    var ed = el("button","btn ghost","修改這一天");
+    ed.addEventListener("click", function(){ openLogSheet(rec.mins, rec); });
+    sheet.appendChild(ed);
+    var b = el("button","btn quiet","關閉");
+    b.addEventListener("click", closeSheet);
+    sheet.appendChild(b);
+  });
+}
+
+function renderTagStats(d){
+  var box = $("tagStats"), i, j;
+  box.innerHTML = "";
+  if(!d.length){
+    box.appendChild(el("div","empty","記下坐中覺受後，這裡會累計出現次數，方便對照宗旨裡說的進境。"));
+    return;
+  }
+  var count = {}, max = 0;
+  for(i=0;i<d.length;i++){
+    var tg = d[i].tags || [];
+    for(j=0;j<tg.length;j++){
+      count[tg[j]] = (count[tg[j]] || 0) + 1;
+      if(count[tg[j]] > max) max = count[tg[j]];
+    }
+  }
+  if(!max){
+    box.appendChild(el("div","empty","目前還沒有標記覺受。下次記錄時點幾個標籤即可。"));
+    return;
+  }
+  var order = TAGS.slice(0).sort(function(a,b){ return (count[b.k]||0) - (count[a.k]||0); });
+  for(i=0;i<order.length;i++){
+    var n = count[order[i].k] || 0;
+    if(!n) continue;
+    var row = el("div","tagbar");
+    row.appendChild(el("span","nm", order[i].n));
+    var tr = el("span","tr");
+    var fill = el("i");
+    fill.style.width = Math.round(n / max * 100) + "%";
+    tr.appendChild(fill);
+    row.appendChild(tr);
+    row.appendChild(el("span","ct", String(n)));
+    box.appendChild(row);
+  }
+  box.appendChild(el("p","muted","「身暖」「氣微」「鼻息細微」漸多而「雜念如沸」漸少，就是功夫由粗入細的跡象。"));
+}
+
+/* ---------------- 彈層 ---------------- */
+function openSheet(html, after){
+  var sheet = $("sheet");
+  sheet.innerHTML = html;
+  if(after) after(sheet);
+  $("modal").className = "modal on";
+}
+function closeSheet(){ $("modal").className = "modal"; }
+$("modal").addEventListener("click", function(e){
+  if(e.target === $("modal")) closeSheet();
+});
+
+function openZhiguan(){
+  var h = "<h3>念起時 · 止觀四步</h3>";
+  h += '<p class="sub">止而繼之以觀，觀而繼之以止，是定慧雙修。</p><ol class="ol-steps">';
+  for(var i=0;i<ZHIGUAN.length;i++){
+    h += "<li><b>" + ZHIGUAN[i].t + "</b>" + ZHIGUAN[i].d + "</li>";
+  }
+  h += "</ol>";
+  openSheet(h, function(sheet){
+    var b = el("button","btn ghost","回到坐中");
+    b.addEventListener("click", closeSheet);
+    sheet.appendChild(b);
+  });
+}
+
+/* ---------------- 靜坐 ---------------- */
+/* 計時以 endAt 時間戳為準，setInterval 只負責重繪。
+   即使 iOS 在背景把 timer 節流或凍結，回到前景時仍會算出正確剩餘時間。 */
+var sit = { total:0, left:0, endAt:0, timer:null, lock:null, lastPhase:-1, running:false };
+
+function phaseAt(elapsedFrac){
+  var acc = 0, i;
+  for(i=0;i<PHASES.length;i++){
+    acc += PHASES[i].w;
+    if(elapsedFrac <= acc) return i;
+  }
+  return PHASES.length - 1;
+}
+function buildPhaseBar(){
+  var bar = $("sitBar");
+  bar.innerHTML = "";
+  for(var i=0;i<PHASES.length;i++) bar.appendChild(el("i"));
+}
+function startSit(){
+  var mins = S.prefs.dur || 40;
+  var st = stageOf(currentDay());
+  sit.total = mins * 60;
+  sit.left = sit.total;
+  sit.endAt = Date.now() + sit.total * 1000;
+  sit.lastPhase = -1;
+  sit.running = true;
+  $("sitStage").textContent = st.n + "　" + st.t;
+  buildPhaseBar();
+  $("sit").className = "on";
+  Bell.unlock();
+  Bell.ring(3, 660, 2.1);          /* 起香三通 */
+  drawSit();
+  if(sit.timer) clearInterval(sit.timer);
+  sit.timer = setInterval(drawSit, 500);
+  try{
+    if(navigator.wakeLock && navigator.wakeLock.request){
+      navigator.wakeLock.request("screen").then(function(l){ sit.lock = l; }, function(){});
+    }
+  }catch(e){}
+}
+function drawSit(){
+  if(!sit.running) return;
+  sit.left = Math.round((sit.endAt - Date.now()) / 1000);
+  if(sit.left <= 0){
+    sit.left = 0;
+    $("sitClock").textContent = "00:00";
+    endSit(true);
+    return;
+  }
+  var m = Math.floor(sit.left / 60), s = sit.left % 60;
+  $("sitClock").textContent = pad(m) + ":" + pad(s);
+  var frac = (sit.total - sit.left) / sit.total;
+  var pi = phaseAt(frac);
+  if(pi !== sit.lastPhase){
+    $("sitPhase").textContent = PHASES[pi].n;
+    $("sitCue").textContent = PHASES[pi].c;
+    var bars = $("sitBar").childNodes;
+    for(var i=0;i<bars.length;i++) bars[i].className = (i <= pi) ? "on" : "";
+    if(sit.lastPhase >= 0) Bell.soft();   /* 換段一聲 */
+    sit.lastPhase = pi;
+  }
+}
+function endSit(complete){
+  if(!sit.running) return;
+  sit.running = false;
+  if(sit.timer){ clearInterval(sit.timer); sit.timer = null; }
+  try{ if(sit.lock && sit.lock.release) sit.lock.release(); }catch(e){}
+  sit.lock = null;
+  $("sit").className = "";
+  if(complete) Bell.ring(3, 594, 2.4);   /* 收功三通 */
+  var mins = Math.max(1, Math.round((sit.total - Math.max(0, sit.left)) / 60));
+  if(!complete && mins < 2){ toast("這一座未計入"); return; }
+  openLogSheet(mins);
+}
+/* 回到前景立刻校正一次，喚醒後不會看到停住的舊時間 */
+document.addEventListener("visibilitychange", function(){
+  if(!document.hidden && sit.running) drawSit();
+});
+window.addEventListener("focus", function(){ if(sit.running) drawSit(); });
+
+/* ---------------- 記錄本座 ---------------- */
+function openLogSheet(mins, editRec){
+  var editing = !!editRec;
+  var day = editing ? editRec.n : currentDay();
+  var st = stageOf(day);
+  var draft = editing
+    ? { n:editRec.n, mins:editRec.mins, hun:editRec.hun||0, san:editRec.san||0,
+        proofs:(editRec.proofs||[]).slice(0), tags:(editRec.tags||[]).slice(0),
+        note:editRec.note||"", date:editRec.date||todayKey(), ts:editRec.ts||Date.now() }
+    : { n:day, mins:mins, hun:0, san:0, proofs:[], tags:[], note:"", date:todayKey(), ts:Date.now() };
+
+  var h = "";
+  h += "<h3>第 " + day + " 天　" + st.n + "</h3>";
+  h += '<p class="sub">' + st.t + "　·　" + (editing ? "修改紀錄" : "剛坐了 " + mins + " 分鐘") + "</p>";
+  h += '<label class="fld">日期</label><input type="text" id="lgDate" value="' + draft.date + '" placeholder="YYYY-MM-DD">';
+  h += '<label class="fld">調息時長（分鐘）</label><input type="number" id="lgMins" min="1" max="240" value="' + draft.mins + '">';
+  h += '<label class="fld">昏沉程度</label><div class="seg" id="segHun"><button data-v="0">無</button><button data-v="1">微</button><button data-v="2">中</button><button data-v="3">重</button></div>';
+  h += '<label class="fld">散亂程度</label><div class="seg" id="segSan"><button data-v="0">無</button><button data-v="1">微</button><button data-v="2">中</button><button data-v="3">重</button></div>';
+  h += '<label class="fld">坐中覺受（可複選）</label><div class="tagwrap" id="tagWrap"></div>';
+  h += '<label class="fld">現在可考證驗（有則點選）</label><div class="chips" id="chipProof">';
+  h += '<button data-v="g"><b>神入谷中</b>聲音如隔里許，字字明瞭，如空谷答響</button>';
+  h += '<button data-v="b"><b>虛室生白</b>目光騰騰，滿前皆白，內外通明</button>';
+  h += '<button data-v="d"><b>神歸頂天</b>肉身如綿如玉，坐中騰騰欲浮</button>';
+  h += "</div>";
+  h += '<label class="fld">溫養隨筆</label><textarea id="lgNote" placeholder="坐中的覺受、昏沉散亂的起因、對治後的變化⋯⋯"></textarea>';
+
+  openSheet(h, function(sheet){
+    var segSet = function(id, key){
+      var seg = sheet.querySelector("#" + id);
+      var bs = seg.getElementsByTagName("button");
+      var apply = function(v){
+        draft[key] = v;
+        for(var i=0;i<bs.length;i++){
+          bs[i].setAttribute("aria-pressed", (+bs[i].getAttribute("data-v") === v) ? "true" : "false");
+        }
+      };
+      for(var i=0;i<bs.length;i++){
+        (function(b){
+          b.addEventListener("click", function(){ apply(+b.getAttribute("data-v")); });
+        })(bs[i]);
+      }
+      apply(draft[key] || 0);
+    };
+    segSet("segHun","hun");
+    segSet("segSan","san");
+
+    /* 覺受標籤 */
+    var tw = sheet.querySelector("#tagWrap");
+    for(var t=0;t<TAGS.length;t++){
+      (function(tag){
+        var b = el("button", null, tag.n);
+        b.setAttribute("aria-pressed", draft.tags.indexOf(tag.k) >= 0 ? "true" : "false");
+        b.addEventListener("click", function(){
+          var idx = draft.tags.indexOf(tag.k);
+          if(idx < 0){ draft.tags.push(tag.k); b.setAttribute("aria-pressed","true"); }
+          else { draft.tags.splice(idx,1); b.setAttribute("aria-pressed","false"); }
+        });
+        tw.appendChild(b);
+      })(TAGS[t]);
+    }
+
+    var chips = sheet.querySelector("#chipProof").getElementsByTagName("button");
+    for(var i=0;i<chips.length;i++){
+      (function(b){
+        var v = b.getAttribute("data-v");
+        b.setAttribute("aria-pressed", draft.proofs.indexOf(v) >= 0 ? "true" : "false");
+        b.addEventListener("click", function(){
+          var idx = draft.proofs.indexOf(v);
+          if(idx < 0){ draft.proofs.push(v); b.setAttribute("aria-pressed","true"); }
+          else { draft.proofs.splice(idx,1); b.setAttribute("aria-pressed","false"); }
+        });
+      })(chips[i]);
+    }
+
+    sheet.querySelector("#lgNote").value = draft.note;
+
+    var save = el("button","btn", editing ? "更 新" : "記 上 一 筆");
+    save.addEventListener("click", function(){
+      var mv = parseInt(sheet.querySelector("#lgMins").value, 10);
+      draft.mins = (isNaN(mv) || mv < 1) ? (mins || 1) : mv;
+      var dv = sheet.querySelector("#lgDate").value.replace(/\//g, "-").trim();
+      draft.date = /^\d{4}-\d{1,2}-\d{1,2}$/.test(dv) ? dv : todayKey();
+      draft.note = sheet.querySelector("#lgNote").value;
+      S.days[String(draft.n)] = draft;
+      saveStore();
+      closeSheet();
+      renderToday(); renderLog();
+      toast(editing ? "第 " + draft.n + " 天已更新" : "第 " + draft.n + " 天已記上");
+    });
+    sheet.appendChild(save);
+
+    if(editing){
+      var del = el("button","btn danger","刪除這一天");
+      del.addEventListener("click", function(){
+        delete S.days[String(draft.n)];
+        reindexDays();
+        saveStore(); closeSheet(); renderToday(); renderLog();
+        toast("已刪除");
+      });
+      sheet.appendChild(del);
+    }
+    var skip = el("button","btn quiet", editing ? "取消" : "這座不計入");
+    skip.addEventListener("click", closeSheet);
+    sheet.appendChild(skip);
+  });
+}
+
+/* 刪除中間某天後，把天數重新排成連續的 1..N */
+function reindexDays(){
+  var arr = doneDays(), out = {}, i;
+  for(i=0;i<arr.length;i++){
+    arr[i].n = i + 1;
+    out[String(i+1)] = arr[i];
+  }
+  S.days = out;
+}
+
+/* ---------------- 差謬 ---------------- */
+function renderPitfalls(){
+  var wrap = $("pitfalls"), i;
+  wrap.innerHTML = "";
+  for(i=0;i<CARDS.length;i++){
+    if(CARDS[i].g !== "回光差謬") continue;
+    var c = el("div","card");
+    c.appendChild(el("div","eyebrow", CARDS[i].t));
+    c.appendChild(el("div","quote", CARDS[i].q));
+    c.appendChild(el("div","gloss", CARDS[i].p));
+    wrap.appendChild(c);
+  }
+}
+
+/* ---------------- 資料匯出入 ---------------- */
+function textSheet(title, sub, text){
+  openSheet("<h3>" + title + '</h3><p class="sub">' + sub + "</p>", function(sheet){
+    var ta = el("textarea");
+    ta.value = text;
+    ta.style.minHeight = "220px";
+    ta.setAttribute("readonly","readonly");
+    sheet.appendChild(ta);
+    var cp = el("button","btn","全選並複製");
+    cp.addEventListener("click", function(){
+      ta.removeAttribute("readonly");
+      ta.focus(); ta.setSelectionRange(0, ta.value.length);
+      var ok = false;
+      try{ ok = document.execCommand("copy"); }catch(e){}
+      ta.setAttribute("readonly","readonly");
+      toast(ok ? "已複製到剪貼簿" : "請長按選取後複製");
+    });
+    sheet.appendChild(cp);
+    var cl = el("button","btn quiet","關閉");
+    cl.addEventListener("click", closeSheet);
+    sheet.appendChild(cl);
+  });
+}
+function exportJson(){
+  textSheet("匯出 JSON 備份", "複製後存到備忘錄或雲端硬碟即可。", JSON.stringify(S));
+}
+function exportCsv(){
+  var d = doneDays(), i;
+  var rows = ["天數,旬,日期,分鐘,昏沉,散亂,覺受,神入谷中,虛室生白,神歸頂天,隨筆"];
+  for(i=0;i<d.length;i++){
+    var r = d[i];
+    var pr = r.proofs || [];
+    var note = (r.note || "").replace(/"/g, '""').replace(/\n/g, " ");
+    rows.push([
+      r.n, stageOf(r.n).n, r.date || "", r.mins || 0, r.hun || 0, r.san || 0,
+      '"' + tagText(r) + '"',
+      pr.indexOf("g") >= 0 ? "有" : "",
+      pr.indexOf("b") >= 0 ? "有" : "",
+      pr.indexOf("d") >= 0 ? "有" : "",
+      '"' + note + '"'
+    ].join(","));
+  }
+  textSheet("匯出 CSV", "貼進試算表即可接上你的百日實踐表。", rows.join("\n"));
+}
+function importJson(){
+  openSheet("<h3>從 JSON 還原</h3><p class=\"sub\">貼上先前匯出的備份內容，將覆蓋目前紀錄。</p>", function(sheet){
+    var ta = el("textarea");
+    ta.placeholder = "在這裡貼上 JSON";
+    ta.style.minHeight = "180px";
+    sheet.appendChild(ta);
+    var go = el("button","btn","確定還原");
+    go.addEventListener("click", function(){
+      var obj = null;
+      try{ obj = JSON.parse(ta.value); }catch(e){}
+      if(!obj || typeof obj !== "object" || !obj.days){
+        toast("內容看起來不是有效的備份");
+        return;
+      }
+      mem = obj; S = mem;
+      if(!S.cards) S.cards = {};
+      if(!S.prefs) S.prefs = { dur:40 };
+      saveStore();
+      closeSheet();
+      renderAll();
+      toast("已還原");
+    });
+    sheet.appendChild(go);
+    var cl = el("button","btn quiet","取消");
+    cl.addEventListener("click", closeSheet);
+    sheet.appendChild(cl);
+  });
+}
+function resetAll(){
+  openSheet('<h3>重新開始百日</h3><p class="sub">所有已記錄的天數、隨筆與熟度都會清空，無法復原。建議先匯出備份。</p>', function(sheet){
+    var yes = el("button","btn danger","確定清空");
+    yes.addEventListener("click", function(){
+      mem = { days:{}, cards:{}, prefs:{ dur: S.prefs.dur || 40 }, created: Date.now() };
+      S = mem; saveStore(); closeSheet(); renderAll();
+      toast("已重新開始");
+    });
+    sheet.appendChild(yes);
+    var no = el("button","btn quiet","再想想");
+    no.addEventListener("click", closeSheet);
+    sheet.appendChild(no);
+  });
+}
+
+/* ---------------- 設定 ---------------- */
+function renderDurSeg(){
+  var seg = $("segDur"), bs = seg.getElementsByTagName("button"), i;
+  var cur = S.prefs.dur || 40;
+  var preset = [15,25,40];
+  var isCustom = preset.indexOf(cur) < 0;
+  for(i=0;i<bs.length;i++){
+    var m = +bs[i].getAttribute("data-min");
+    var on = isCustom ? (m === 0) : (m === cur);
+    bs[i].setAttribute("aria-pressed", on ? "true" : "false");
+  }
+  $("customDurWrap").style.display = isCustom ? "block" : "none";
+  if(isCustom) $("customDur").value = cur;
+}
+function renderBellSeg(){
+  var bs = $("segBell").getElementsByTagName("button"), i;
+  for(i=0;i<bs.length;i++){
+    bs[i].setAttribute("aria-pressed", (+bs[i].getAttribute("data-v") === (S.prefs.bell ? 1 : 0)) ? "true" : "false");
+  }
+}
+function applyTheme(){
+  document.body.className = (S.prefs.theme === "midnight") ? "theme-midnight" : "";
+  var meta = document.querySelector('meta[name="theme-color"]');
+  if(meta) meta.setAttribute("content", S.prefs.theme === "midnight" ? "#000000" : "#0B1020");
+  var bs = $("segTheme").getElementsByTagName("button"), i;
+  for(i=0;i<bs.length;i++){
+    bs[i].setAttribute("aria-pressed", (bs[i].getAttribute("data-v") === S.prefs.theme) ? "true" : "false");
+  }
+}
+
+/* ---------------- 分頁與手勢 ---------------- */
+var VIEW_ORDER = ["v-today","v-cards","v-log","v-more"];
+function gotoView(id){
+  var all = document.querySelectorAll("nav.tabs button"), j;
+  for(j=0;j<all.length;j++){
+    all[j].setAttribute("aria-selected", all[j].getAttribute("data-view") === id ? "true" : "false");
+  }
+  var views = document.querySelectorAll(".view");
+  for(j=0;j<views.length;j++) views[j].className = "view";
+  $(id).className = "view on";
+  document.querySelector("main").scrollTop = 0;
+  if(id === "v-log") renderLog();
+  if(id === "v-cards") renderCardIndex();
+}
+function shiftView(dir){
+  var cur = document.querySelector(".view.on").id;
+  var i = VIEW_ORDER.indexOf(cur) + dir;
+  if(i < 0 || i >= VIEW_ORDER.length) return;
+  gotoView(VIEW_ORDER[i]);
+}
+
+/* 通用左右滑動偵測：垂直位移較大時放行給捲動 */
+function onSwipe(node, handler){
+  var x0 = 0, y0 = 0, t0 = 0, tracking = false;
+  node.addEventListener("touchstart", function(e){
+    if(e.touches.length !== 1){ tracking = false; return; }
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+    t0 = Date.now(); tracking = true;
+  }, { passive:true });
+  node.addEventListener("touchend", function(e){
+    if(!tracking) return;
+    tracking = false;
+    var t = e.changedTouches[0];
+    var dx = t.clientX - x0, dy = t.clientY - y0, dt = Date.now() - t0;
+    if(dt > 700) return;
+    if(Math.abs(dx) < 56) return;
+    if(Math.abs(dy) > Math.abs(dx) * 0.7) return;
+    handler(dx > 0 ? 1 : -1, e);
+  }, { passive:true });
+}
+
+/* ---------------- 綁定 ---------------- */
+function bind(){
+  var tabs = document.querySelectorAll("nav.tabs button"), i;
+  for(i=0;i<tabs.length;i++){
+    (function(b){
+      b.addEventListener("click", function(){ gotoView(b.getAttribute("data-view")); });
+    })(tabs[i]);
+  }
+
+  /* 主畫面左右滑動切換分頁 */
+  onSwipe(document.querySelector("main"), function(dir){ shiftView(dir > 0 ? -1 : 1); });
+
+  /* 卡片：左滑再看、右滑已熟 */
+  var swiped = false;
+  onSwipe($("flip"), function(dir, e){
+    swiped = true;
+    e.stopPropagation();
+    gradeCard(dir > 0);
+    setTimeout(function(){ swiped = false; }, 350);
+  });
+
+  $("btnSit").addEventListener("click", startSit);
+  $("sitStop").addEventListener("click", function(){ endSit(false); });
+  $("sitZhiguan").addEventListener("click", openZhiguan);
+  $("btnZhiguan").addEventListener("click", openZhiguan);
+
+  $("flip").addEventListener("click", function(){
+    if(swiped) return;
+    var f = $("flip");
+    f.className = (f.className.indexOf("open") >= 0) ? "flip" : "flip open";
+  });
+  $("btnAgain").addEventListener("click", function(){ gradeCard(false); });
+  $("btnKnown").addEventListener("click", function(){ gradeCard(true); });
+  $("btnSkip").addEventListener("click", pickCard);
+
+  var dbs = $("segDur").getElementsByTagName("button");
+  for(i=0;i<dbs.length;i++){
+    (function(b){
+      b.addEventListener("click", function(){
+        var m = +b.getAttribute("data-min");
+        if(m === 0){
+          S.prefs.dur = parseInt($("customDur").value, 10) || 30;
+          $("customDurWrap").style.display = "block";
+          $("customDur").focus();
+        }else{
+          S.prefs.dur = m;
+        }
+        saveStore(); renderDurSeg();
+      });
+    })(dbs[i]);
+  }
+  $("customDur").addEventListener("change", function(){
+    var v = parseInt($("customDur").value, 10);
+    if(v > 0 && v <= 240){ S.prefs.dur = v; saveStore(); toast("已設為 " + v + " 分鐘"); }
+  });
+
+  var bbs = $("segBell").getElementsByTagName("button");
+  for(i=0;i<bbs.length;i++){
+    (function(b){
+      b.addEventListener("click", function(){
+        S.prefs.bell = +b.getAttribute("data-v");
+        saveStore(); renderBellSeg();
+        if(S.prefs.bell) Bell.demo();
+      });
+    })(bbs[i]);
+  }
+  $("btnTestBell").addEventListener("click", function(){ Bell.demo(); });
+
+  var tbs = $("segTheme").getElementsByTagName("button");
+  for(i=0;i<tbs.length;i++){
+    (function(b){
+      b.addEventListener("click", function(){
+        S.prefs.theme = b.getAttribute("data-v");
+        saveStore(); applyTheme();
+      });
+    })(tbs[i]);
+  }
+
+  $("btnExportJson").addEventListener("click", exportJson);
+  $("btnExportCsv").addEventListener("click", exportCsv);
+  $("btnImport").addEventListener("click", importJson);
+  $("btnReset").addEventListener("click", resetAll);
+}
+
+/* ---------------- 啟動 ---------------- */
+function renderAll(){
+  applyTheme();
+  renderToday();
+  renderCardStats();
+  renderCardIndex();
+  renderLog();
+  renderPitfalls();
+  renderDurSeg();
+  renderBellSeg();
+}
+buildTicks();
+bind();
+renderAll();
+pickCard();
+
+/* 桌面捷徑深層連結：?go=sit 直接起香，?go=cards 進心法頁 */
+(function(){
+  var q = window.location.search || "";
+  if(q.indexOf("go=cards") >= 0){ gotoView("v-cards"); }
+  else if(q.indexOf("go=sit") >= 0){ setTimeout(startSit, 260); }
+})();
+
+/* Service Worker：離線可用 */
+if("serviceWorker" in navigator && window.location.protocol.indexOf("http") === 0){
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  });
+}
+
+})();
+</script>
+</body>
+</html>
